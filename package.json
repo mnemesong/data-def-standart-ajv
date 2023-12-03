@@ -1,0 +1,24 @@
+{
+  "name": "data-def-standart-ajv",
+  "version": "1.0.0",
+  "description": "Data defenition standart ajv schemes",
+  "main": "./src/index.js",
+  "scripts": {
+    "test:unit": "mocha ./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mnemesong/data-def-standart-ajv.git"
+  },
+  "keywords": [],
+  "author": "Anatoly Starodubtsev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mnemesong/data-def-standart-ajv/issues"
+  },
+  "homepage": "https://github.com/mnemesong/data-def-standart-ajv#readme",
+  "devDependencies": {
+    "ajv": "^8.12.0",
+    "mocha": "^10.2.0"
+  }
+}
