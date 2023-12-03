@@ -23,7 +23,7 @@ const valueVersion = {
     properties: {
         schema: {
             type: "object",
-            properties: { type: ["string", "array"] }
+            required: ["type"]
         },
         value: {
             type: [

@@ -95,3 +95,126 @@ describe("test schema schema", () => {
         });
     });
 });
+
+describe("test value schema", () => {
+    describe("test valid schemas with valid value", () => {
+        const schemaVers = [
+            {
+                schema: {
+                    type: "null"
+                },
+                value: null,
+            },
+            {
+                schema: {
+                    type: ["string", "array"],
+                    contains: {
+                        type: "string"
+                    }
+                },
+                value: ["asd", "dsad"],
+            },
+            {
+                schema: {
+                    type: ["string", "array"],
+                    contains: {
+                        type: "string"
+                    }
+                },
+                value: "sdasfa  asda",
+            },
+            {
+                schema: {
+                    type: "object",
+                    properties: {
+                        k1: {
+                            type: "string",
+                            nullable: true
+                        },
+                        k2: {
+                            type: "integer"
+                        }
+                    },
+                    required: ["k1"]
+                },
+                value: { k1: "dasd" },
+            },
+            {
+                schema: {
+                    type: "object",
+                    properties: {
+                        k1: {
+                            type: "string",
+                            nullable: true
+                        },
+                        k2: {
+                            type: "integer"
+                        }
+                    },
+                    required: ["k1"]
+                },
+                value: { k1: null, k2: 12 },
+            },
+        ];
+        schemaVers.forEach(sch => {
+            it("test schema " + JSON.stringify(sch.schema), () => {
+                const valid = ajv.compile(index.valueVersion);
+                const result = valid(sch);
+                if (!result) console.log("invalid reason: ", valid.errors);
+                assert.ok(result);
+            });
+            it(
+                "test value" + JSON.stringify(sch.value) + " for schema "
+                + JSON.stringify(sch.schema),
+                () => {
+                    const valid = ajv.compile(sch.schema);
+                    const result = valid(sch.value);
+                    if (!result) console.log("invalid reason: ", valid.errors);
+                    assert.ok(result);
+                }
+            );
+        });
+    });
+
+    describe("test invalid schemas with valid values", () => {
+        const schemaVers = [
+            {
+                schema: {
+                    type: "null"
+                },
+            },
+            {
+                schema: {
+                    type: ["string", "array"],
+                    contains: {
+                        type: "string"
+                    }
+                },
+                invalidValues: [null, 12, { k: "v" }, [12, 13]],
+            },
+            {
+                schema1: {
+                    type: "object",
+                    properties: {
+                        k1: {
+                            type: "string",
+                            nullable: true
+                        },
+                        k2: {
+                            type: "integer"
+                        }
+                    },
+                    required: ["k1"]
+                },
+                value: { k1: "v" },
+            },
+        ];
+        schemaVers.forEach(sch => {
+            it("test schema " + JSON.stringify(sch.schema), () => {
+                const valid = ajv.compile(index.valueVersion);
+                const result = valid(sch);
+                assert.ok(!result);
+            });
+        });
+    });
+});
